@@ -14,18 +14,26 @@
 
 \section{Introduction}
 
-Neural activity has been extensively used for investigating cognition.
+Neural activity is central to investigating cognition.
 
 Due to the increased relevance of neural activity in cognitive science, a large number of functional neuroimaging techniques have been developed.
 
-Given the lack of techniques which individually exhibit high overall performance, investigators have attempted to integrate their complementary qualities by using multiple techniques simultaneously.
+Given the lack of techniques which individually exhibit high overall performance, there have been numerous attempts to integrate their complementary qualities by using multiple techniques simultaneously.
 
-Besides multi-modal functional neuroimaging, investigators have also proposed uni-modal image synthesis as a method of augmenting neuroimaging techniques. This task consists of synthetizing novel data collected through a modality based on data previously collected from that modality.
+Besides multi-modal functional neuroimaging, investigators have also proposed uni-modal image synthesis as a method of augmenting neuroimaging techniques. This task consists of synthetizing novel data collected through a modality based on previous data collected through that modality.
 
-In addition to uni-modal image synthesis, investigators have also proposed cross-modal image synthesis as a method of augmenting neuroimaging techniques. This task consists of reconstructing data collected through a target modality based on data collected through a distinct source modality, by exploiting the inherent relation between them. In a setting where both source and target modalities are available, this task might have limited utility. However, the value of cross-modal image synthesis comes from settings where only one modality is available. In such settings, data collected through an unavailable modality can be approximated. Unfortunately, to the best of the authors' knowledge, this approach has only been used for augmenting structural neuroimaging, with no analogous efforts for functional neuroimaging.
+In addition to uni-modal image synthesis, investigators have also proposed cross-modal image synthesis for augmenting neuroimaging techniques. This task consists of reconstructing data collected through a target modality based on data collected through a distinct source modality, by exploiting the inherent relation between them. In a setting where both source and target modalities are available, this task might have limited utility. However, the value of cross-modal image synthesis comes from settings where only one modality is available. In such settings, data collected through an unavailable modality can be approximated. Unfortunately, to the best of the authors' knowledge, this approach has only been used for augmenting structural neuroimaging, with no analogous efforts for functional neuroimaging.
 
-Despite the major demand for high-performance functional neuroimaging and the success of cross-modal image synthesis for structural neuroimaging, limited attention has been given to cross-modal image synthesis for functional neuroimaging.
+Despite the major demand for high-performance functional neuroimaging and the success of cross-modal image synthesis for structural neuroimaging, limited attention has been given to cross-modal image synthesis for functional neuroimaging. This comes as a natural extension of the growing collection of functional neuroimaging augmentation methods.
 
+The task of modelling the relation between two modalities can be addressed through different approaches.
 
+The suitability of EEG-fMRI as a candidate pair for cross-modal image synthesis is supported by the established practices of multi-modal neuroimaging using EEG-fMRI. These practices are the result of biophysical compatibility and the presence of complementary qualities. 
+
+Not only are EEG and fMRI compatible and complementary, but their results are also strongly correlated. The correlation occurs because both techniques are designed to detect neural activity.
+
+Model architecture: convolutional, residual
+
+Evaluation
 
 \end{document}
