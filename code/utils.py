@@ -72,23 +72,21 @@ class OddballDataset(Dataset):
         return [eeg_sample_data, fmri_sample_data]
 
 
-def show_slices(slices):
-    fig, axes = plt.subplots(1, len(slices))
-    for i, slice in enumerate(slices):
+def fmri_preview(volume):
+    """Preview central slices of an fMRI volume across its 3 dimensions."""
+    slice_sagital = volume[32, :, :]
+    slice_coronal = volume[:, 32, :]
+    slice_horizontal = volume[:, :, 16]
+
+    fig, axes = plt.subplots(1, 3)
+    for i, slice in enumerate([slice_sagital, slice_coronal, slice_horizontal]):
         axes[i].imshow(slice.T, cmap="gray", origin="lower")
 
     plt.show()
 
 
-def fmri_preview(volume):
-    slice_sagital = volume[32, :, :]
-    slice_coronal = volume[:, 32, :]
-    slice_horizontal = volume[:, :, 16]
-
-    show_slices([slice_sagital, slice_coronal, slice_horizontal])
-
-
 def eeg_preview(frame):
+    """Preview electrophysiological data recorded by each channel in an EEG frame."""
     fig, axes = plt.subplots(len(frame), 1)
     for channel in range(len(frame)):
         axes[channel].plot(range(len(frame[channel])), frame[channel])
