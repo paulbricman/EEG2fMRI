@@ -5,6 +5,7 @@ from scipy.io import loadmat
 
 import os
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class OddballDataset(Dataset):
@@ -68,8 +69,34 @@ class OddballDataset(Dataset):
             [eeg_trial_data[channel][eeg_start_index:eeg_end_index] for channel in range(len(eeg_trial_data))])
         fmri_sample_data = fmri_trial_data[fmri_index]
 
-        return [eeg_sample_data.shape, fmri_sample_data.shape]
+        return [eeg_sample_data, fmri_sample_data]
+
+
+def show_slices(slices):
+    fig, axes = plt.subplots(1, len(slices))
+    for i, slice in enumerate(slices):
+        axes[i].imshow(slice.T, cmap="gray", origin="lower")
+
+    plt.show()
+
+
+def fmri_preview(volume):
+    slice_sagital = volume[32, :, :]
+    slice_coronal = volume[:, 32, :]
+    slice_horizontal = volume[:, :, 16]
+
+    show_slices([slice_sagital, slice_coronal, slice_horizontal])
+
+
+def eeg_preview(frame):
+    fig, axes = plt.subplots(len(frame), 1)
+    for channel in range(len(frame)):
+        axes[channel].plot(range(len(frame[channel])), frame[channel])
+
+    plt.show()
 
 
 dataset = OddballDataset('../../OddballData')
-print(dataset[600])
+sample = dataset[70]
+eeg_preview(sample[0])
+fmri_preview(sample[1])
