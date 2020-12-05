@@ -4,6 +4,7 @@ import nibabel as nib
 from scipy.io import loadmat
 
 import os
+import numpy as np
 
 
 class OddballDataset(Dataset):
@@ -59,7 +60,14 @@ class OddballDataset(Dataset):
         eeg_trial_data = loadmat(eeg_path)['data_reref']
         fmri_trial_data = nib.load(fmri_path).get_fdata()
 
-        return [eeg_trial_data.shape, fmri_trial_data.shape]
+        # Extract relevant sample data from trial
+        eeg_trial_data = eeg_trial_data[:34] # 33 if no BCG
+        fmri_trial_data = np.moveaxis(fmri_trial_data, -1, 0)
+
+        eeg_sample_data = np.array([eeg_trial_data[channel][eeg_start_index:eeg_end_index] for channel in range(len(eeg_trial_data))])
+        fmri_sample_data = fmri_trial_data[fmri_index]
+
+        return [eeg_sample_data.shape, fmri_sample_data.shape]
 
 
 dataset = OddballDataset('../../OddballData')
