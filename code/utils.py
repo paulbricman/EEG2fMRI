@@ -89,7 +89,7 @@ def fmri_preview(volume):
 
     fig, axes = plt.subplots(1, 3)
     for i, slice in enumerate([slice_sagital, slice_coronal, slice_horizontal]):
-        axes[i].imshow(slice.T, cmap="gray", origin="lower")
+        axes[i].imshow(slice.T, cmap="viridis", origin="lower")
 
     plt.show()
 
@@ -104,6 +104,6 @@ def eeg_preview(frame):
 
 
 dataset = OddballDataset('../../OddballData')
-sample = dataset[1000]
+sample = dataset[500]
 eeg_preview(sample[0])
 fmri_preview(sample[1])
