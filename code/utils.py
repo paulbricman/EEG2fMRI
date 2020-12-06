@@ -1,4 +1,5 @@
 from torch.utils.data import Dataset
+import torch
 
 import nibabel as nib
 from scipy.io import loadmat
@@ -65,9 +66,20 @@ class OddballDataset(Dataset):
         eeg_trial_data = eeg_trial_data[:34]  # 33 if no BCG
         fmri_trial_data = np.moveaxis(fmri_trial_data, -1, 0)
 
+        print('EEG', np.mean(eeg_trial_data), np.std(eeg_trial_data))
+        print('fMRI', np.mean(fmri_trial_data), np.std(fmri_trial_data))
+
         eeg_sample_data = np.array(
             [eeg_trial_data[channel][eeg_start_index:eeg_end_index] for channel in range(len(eeg_trial_data))])
         fmri_sample_data = fmri_trial_data[fmri_index]
+
+        # Roughly standardize EEG and fMRI sample data
+        eeg_sample_data = eeg_sample_data / 30
+        fmri_sample_data = (fmri_sample_data - 400) / 700
+
+        # Convert to Pytorch tensors
+        eeg_sample_data = torch.from_numpy(eeg_sample_data)
+        fmri_sample_data = torch.from_numpy(fmri_sample_data)
 
         return [eeg_sample_data, fmri_sample_data]
 
@@ -95,6 +107,6 @@ def eeg_preview(frame):
 
 
 dataset = OddballDataset('../../OddballData')
-sample = dataset[70]
+sample = dataset[1000]
 eeg_preview(sample[0])
 fmri_preview(sample[1])
