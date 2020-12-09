@@ -52,8 +52,7 @@ class OddballDataset(Dataset):
         fmri_index = sample_in_trial + self.skipped_samples_per_trial
 
         # Loading EEG and fMRI data from sample trial
-        subject_path = self.root_dir + '/ds116_sub' + \
-            f'{(subject + 1):03}' + '/sub' + f'{(subject + 1):03}/'
+        subject_path = self.root_dir + '/sub' + f'{(subject + 1):03}/'
         trial_path = 'task' + f'{(trial // 3 + 1):03}' + \
             '_run' + f'{(trial % 3 + 1):03}/'
         eeg_path = subject_path + 'EEG/' + trial_path + 'EEG_rereferenced.mat'
