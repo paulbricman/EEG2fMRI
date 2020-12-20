@@ -39,6 +39,7 @@ class OddballDataset(Dataset):
 
     def __len__(self):
         return self.subject_count * self.trials_per_subject * self.samples_per_trial
+        # first fMRI volume at t=2s
 
     def __getitem__(self, idx):
         # Computing subject, trial, and trial-level sample index of sample
@@ -62,7 +63,8 @@ class OddballDataset(Dataset):
         fmri_trial_data = nib.load(fmri_path).get_fdata()
 
         # Extract relevant sample data from trial
-        eeg_trial_data = eeg_trial_data[:34]  # 33 if no BCG
+        eeg_trial_data = eeg_trial_data[:34]  # 33 if no ECG
+        # no ECG!
         fmri_trial_data = np.moveaxis(fmri_trial_data, -1, 0)
 
         eeg_sample_data = np.array(
@@ -72,6 +74,7 @@ class OddballDataset(Dataset):
         # Roughly standardize EEG and fMRI sample data
         eeg_sample_data = eeg_sample_data / 30
         fmri_sample_data = (fmri_sample_data - 400) / 700
+        # get mean, sd from all dataset
 
         # Convert to Pytorch tensors
         eeg_sample_data = torch.from_numpy(eeg_sample_data)
@@ -100,9 +103,3 @@ def eeg_preview(frame):
         axes[channel].plot(range(len(frame[channel])), frame[channel])
 
     plt.show()
-
-
-dataset = OddballDataset('../../OddballData')
-sample = dataset[500]
-eeg_preview(sample[0])
-fmri_preview(sample[1])
