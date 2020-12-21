@@ -27,7 +27,7 @@ class OddballDataset(Dataset):
         self.samples_per_block = 155
         self.blocks_per_subject = 6
         self.samples_per_subject = self.samples_per_block * self.blocks_per_subject
-        self.subject_count = len(os.listdir())
+        self.subject_count = len(os.listdir(self.root_dir))
         self.skipped_samples_per_block = 170 - self.samples_per_block
         self.eeg_frequency = 1000  # Hz
         self.fmri_period = 2  # seconds
@@ -104,6 +104,27 @@ def eeg_preview(frame):
     plt.show()
 
 
-sample = OddballDataset('../../OddballData')[0]
-eeg_preview(sample[0])
-fmri_preview(sample[1])
+def compute_standardization_parameters(dataset):
+    """Compute mean and standard deviation of all EEG and fMRI data"""
+    full_eeg_data = []
+    full_fmri_data = []
+
+    for subject in range(dataset.subject_count):
+        for block in range(dataset.blocks_per_subject):
+            subject_path = dataset.root_dir + '/sub' + f'{(subject + 1):03}/'
+            block_path = 'task' + f'{(block // 3 + 1):03}' + \
+                '_run' + f'{(block % 3 + 1):03}/'
+            eeg_path = subject_path + 'EEG/' + block_path + 'EEG_rereferenced.mat'
+            fmri_path = subject_path + 'BOLD/' + block_path + 'bold_mcf_brain.nii.gz'
+
+            eeg_block_data = loadmat(eeg_path)['data_reref']
+            fmri_block_data = nib.load(fmri_path).get_fdata()
+
+            full_eeg_data += [eeg_block_data]
+            full_fmri_data += [fmri_block_data]
+
+    print('EEG', np.mean(full_eeg_data), np.std(full_eeg_data))
+    print('fMRI', np.mean(full_fmri_data), np.std(full_fmri_data))
+
+
+compute_standardization_parameters(OddballDataset('../../OddballData/'))
