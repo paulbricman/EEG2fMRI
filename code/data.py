@@ -109,6 +109,7 @@ def compute_standardization_parameters(dataset):
     full_eeg_data = []
     full_fmri_data = []
 
+    # Load all EEG and fMRI data
     for subject in range(dataset.subject_count):
         for block in range(dataset.blocks_per_subject):
             subject_path = dataset.root_dir + '/sub' + f'{(subject + 1):03}/'
