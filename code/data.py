@@ -125,6 +125,3 @@ def compute_standardization_parameters(dataset):
 
     print('EEG', np.mean(full_eeg_data), np.std(full_eeg_data))
     print('fMRI', np.mean(full_fmri_data), np.std(full_fmri_data))
-
-
-compute_standardization_parameters(OddballDataset('../../OddballData/'))
