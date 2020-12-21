@@ -4,6 +4,7 @@ from data import OddballDataset
 from model import ConvolutionalModel
 
 dataset = OddballDataset('../../OddballData')
+
 train_loader = DataLoader(dataset)
 
 model = ConvolutionalModel()

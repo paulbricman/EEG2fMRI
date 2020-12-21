@@ -63,8 +63,7 @@ class OddballDataset(Dataset):
         fmri_trial_data = nib.load(fmri_path).get_fdata()
 
         # Extract relevant sample data from trial
-        eeg_trial_data = eeg_trial_data[:34]  # 33 if no ECG
-        # no ECG!
+        eeg_trial_data = eeg_trial_data[:34]
         fmri_trial_data = np.moveaxis(fmri_trial_data, -1, 0)
 
         eeg_sample_data = np.array(
@@ -103,3 +102,8 @@ def eeg_preview(frame):
         axes[channel].plot(range(len(frame[channel])), frame[channel])
 
     plt.show()
+
+
+sample = OddballDataset('../../OddballData')[0]
+eeg_preview(sample[0])
+fmri_preview(sample[1])
