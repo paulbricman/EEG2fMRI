@@ -70,10 +70,9 @@ class OddballDataset(Dataset):
             [eeg_block_data[channel][eeg_start_index:eeg_end_index] for channel in range(len(eeg_block_data))])
         fmri_sample_data = fmri_block_data[fmri_index]
 
-        # Roughly standardize EEG and fMRI sample data
-        eeg_sample_data = eeg_sample_data / 30
-        fmri_sample_data = (fmri_sample_data - 400) / 700
-        # get mean, sd from all dataset
+        # Standardize EEG and fMRI sample data using pre-computed values
+        eeg_sample_data = (eeg_sample_data - 0.8) / 27.41
+        fmri_sample_data = (fmri_sample_data - 482.87) / 787.4
 
         # Convert to Pytorch tensors
         eeg_sample_data = torch.from_numpy(eeg_sample_data)
