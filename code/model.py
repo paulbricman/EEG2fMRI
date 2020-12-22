@@ -42,8 +42,7 @@ class ConvolutionalModel(pl.LightningModule):
             nn.Flatten(),
 	    nn.Linear(768, 1000),
 	    nn.ReLU(),
-            nn.Linear(1000, np.prod(self.fmri_dimensions)),
-	    nn.Tanh()
+            nn.Linear(1000, np.prod(self.fmri_dimensions))
         ).double()
 
     def forward(self, x):
@@ -65,4 +64,4 @@ class ConvolutionalModel(pl.LightningModule):
         return loss
 
     def configure_optimizers(self):
-        return torch.optim.Adam(self.parameters())
+        return torch.optim.Adam(self.parameters(), lr=0.2)
