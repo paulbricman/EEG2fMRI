@@ -2,7 +2,7 @@ import pytorch_lightning as pl
 from torch.utils.data import DataLoader
 import torch
 from data import OddballDataset
-from model import ConvolutionalModel
+from model import ConvolutionalModel, TransformerModel
 
 dataset = OddballDataset('../../OddballData')
 
@@ -16,6 +16,6 @@ train_dataset, test_dataset, val_dataset = torch.utils.data.random_split(dataset
 train_loader = DataLoader(train_dataset, num_workers=32, batch_size=batch_size)
 val_loader = DataLoader(val_dataset, num_workers=32, batch_size=batch_size)
 
-model = ConvolutionalModel()
+model = TransformerModel()
 trainer = pl.Trainer(gpus=4, accelerator='dp', max_epochs=10)
 trainer.fit(model, train_loader, val_loader)
