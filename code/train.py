@@ -11,10 +11,11 @@ train_size = int(train_prop * len(dataset))
 test_size = int(test_prop * len(dataset))
 val_size = len(dataset) - train_size - test_size
 
+batch_size = 32
 train_dataset, test_dataset, val_dataset = torch.utils.data.random_split(dataset, [train_size, test_size, val_size])
-train_loader = DataLoader(train_dataset)
-val_loader = DataLoader(val_dataset)
+train_loader = DataLoader(train_dataset, num_workers=32, batch_size=batch_size)
+val_loader = DataLoader(val_dataset, num_workers=32, batch_size=batch_size)
 
 model = ConvolutionalModel()
-trainer = pl.Trainer()
+trainer = pl.Trainer(gpus=4, accelerator='dp', max_epochs=10)
 trainer.fit(model, train_loader, val_loader)

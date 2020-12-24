@@ -17,24 +17,32 @@ class ConvolutionalModel(pl.LightningModule):
         self.model = nn.Sequential(
             nn.Conv2d(1, 4, (1, 5), stride=2),
             nn.AvgPool2d((1, 2)),
+	    nn.BatchNorm2d(4),
             nn.ReLU(),
             nn.Conv2d(4, 8, (1, 5), stride=2),
             nn.AvgPool2d((1, 2)),
+	    nn.BatchNorm2d(8),
             nn.ReLU(),
             nn.Conv2d(8, 16, (1, 5), stride=2),
             nn.AvgPool2d((1, 2)),
+	    nn.BatchNorm2d(16),
             nn.ReLU(),
             nn.Conv2d(16, 32, (1, 5), stride=2),
             nn.AvgPool2d((1, 2)),
+	    nn.BatchNorm2d(32),
             nn.ReLU(),
             nn.Conv2d(32, 64, (1, 5), stride=2),
             nn.AvgPool2d((1, 2)),
+	    nn.BatchNorm2d(64),
             nn.ReLU(),
             nn.Conv2d(64, 128, (1, 5), stride=2),
             nn.AvgPool2d((1, 2)),
+	    nn.BatchNorm2d(128),
             nn.ReLU(),
             nn.Flatten(),
-            nn.Linear(768, np.prod(self.fmri_dimensions))
+	    nn.Linear(768, 1000),
+	    nn.ReLU(),
+            nn.Linear(1000, np.prod(self.fmri_dimensions))
         ).double()
 
     def forward(self, x):
@@ -52,8 +60,8 @@ class ConvolutionalModel(pl.LightningModule):
     def validation_step(self, batch, batch_idx):
         x, y = batch
         loss = F.mse_loss(y, self.forward(x))
-        self.log('val_loss', loss)
+        self.log('val_loss', loss, prog_bar=True)
         return loss
 
     def configure_optimizers(self):
-        return torch.optim.Adam(self.parameters())
+        return torch.optim.Adam(self.parameters(), lr=0.2)
