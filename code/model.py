@@ -15,34 +15,24 @@ class ConvolutionalModel(pl.LightningModule):
         self.fmri_dimensions = [64, 64, 32]
 
         self.model = nn.Sequential(
-            nn.Conv2d(1, 4, (1, 5), stride=2),
+            nn.Conv2d(1, 4, (1, 5), stride=(1, 4)),
             nn.AvgPool2d((1, 2)),
-	    nn.BatchNorm2d(4),
+	        nn.BatchNorm2d(4),
             nn.ReLU(),
-            nn.Conv2d(4, 8, (1, 5), stride=2),
+            nn.Conv2d(4, 8, (1, 5), stride=(1, 4)),
             nn.AvgPool2d((1, 2)),
-	    nn.BatchNorm2d(8),
+	        nn.BatchNorm2d(8),
             nn.ReLU(),
-            nn.Conv2d(8, 16, (1, 5), stride=2),
+            nn.Conv2d(8, 16, (1, 5), stride=(1, 4)),
             nn.AvgPool2d((1, 2)),
-	    nn.BatchNorm2d(16),
+	        nn.BatchNorm2d(16),
             nn.ReLU(),
-            nn.Conv2d(16, 32, (1, 5), stride=2),
+            nn.Conv2d(16, 32, (1, 5), stride=(1, 4)),
             nn.AvgPool2d((1, 2)),
-	    nn.BatchNorm2d(32),
-            nn.ReLU(),
-            nn.Conv2d(32, 64, (1, 5), stride=2),
-            nn.AvgPool2d((1, 2)),
-	    nn.BatchNorm2d(64),
-            nn.ReLU(),
-            nn.Conv2d(64, 128, (1, 5), stride=2),
-            nn.AvgPool2d((1, 2)),
-	    nn.BatchNorm2d(128),
+	        nn.BatchNorm2d(32),
             nn.ReLU(),
             nn.Flatten(),
-	    nn.Linear(768, 1000),
-	    nn.ReLU(),
-            nn.Linear(1000, np.prod(self.fmri_dimensions))
+            nn.Linear(7616, np.prod(self.fmri_dimensions))
         ).double()
 
     def forward(self, x):

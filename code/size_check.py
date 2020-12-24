@@ -7,8 +7,7 @@ from model import ConvolutionalModel
 sample = OddballDataset('../../OddballData')[0]
 eeg_sample = sample[0].view(1, 1, 34, 30000)
 
-trained_model = ConvolutionalModel.load_from_checkpoint('./lightning_logs/version_0/checkpoints/epoch=0-step=1.ckpt')
+trained_model = ConvolutionalModel()
 y = trained_model(eeg_sample).detach().numpy()
 
-fmri_preview(sample[1])
-fmri_preview(y[0])
+print(y.shape)
