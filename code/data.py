@@ -54,10 +54,17 @@ class OddballDataset(Dataset):
 
         # Loading EEG and fMRI data from sample block
         subject_path = self.root_dir + '/sub' + f'{(subject + 1):03}/'
-        block_path = 'task' + f'{(block // 3 + 1):03}' + \
-            '_run' + f'{(block % 3 + 1):03}/'
-        eeg_path = subject_path + 'EEG/' + block_path + 'EEG_rereferenced.mat'
-        fmri_path = subject_path + 'BOLD/' + block_path + 'bold_mcf_brain.nii.gz'
+        eeg_path = subject_path + 'EEG/' + 'task' + f'{(block // 3 + 1):03}' + \
+            '_run' + f'{(block % 3 + 1):03}/' + 'EEG_rereferenced.mat'
+
+        if block < 3:
+            block_type = 'auditory'
+        else:
+            block_type = 'visual'
+	    
+        fmri_path = subject_path + 'BOLD/warsub-' + f'{(subject + 1):02}_task-' + \
+            block_type + 'oddballwithbuttonresponsetotargetstimuli_run-' + \
+            f'{(block % 3 + 1):02}_' + 'bold.nii'
 
         eeg_block_data = loadmat(eeg_path)['data_reref']
         fmri_block_data = nib.load(fmri_path).get_fdata()
@@ -72,9 +79,7 @@ class OddballDataset(Dataset):
 
         # Standardize EEG and fMRI sample data using pre-computed values
         eeg_sample_data = (eeg_sample_data - 0.8) / 27.41
-        fmri_sample_data += 300
-        fmri_sample_data = (np.log10(fmri_sample_data) - 1.4) / 3.76
-        fmri_sample_data = fmri_sample_data * 2 - 1
+        # TODO log-transform fmri sample
 
         # Convert to Pytorch tensors
         eeg_sample_data = torch.from_numpy(eeg_sample_data)
