@@ -15,24 +15,43 @@ class ConvolutionalModel(pl.LightningModule):
         self.fmri_dimensions = [64, 64, 32]
 
         self.model = nn.Sequential(
-            nn.Conv2d(1, 4, (1, 5), stride=(1, 4)),
-            nn.AvgPool2d((1, 2)),
-	        nn.BatchNorm2d(4),
-            nn.ReLU(),
-            nn.Conv2d(4, 8, (1, 5), stride=(1, 4)),
-            nn.AvgPool2d((1, 2)),
-	        nn.BatchNorm2d(8),
-            nn.ReLU(),
-            nn.Conv2d(8, 16, (1, 5), stride=(1, 4)),
-            nn.AvgPool2d((1, 2)),
-	        nn.BatchNorm2d(16),
-            nn.ReLU(),
-            nn.Conv2d(16, 32, (1, 5), stride=(1, 4)),
+            nn.AvgPool2d((1, 4)),
+            nn.Conv2d(1, 32, (1, 25)),
             nn.AvgPool2d((1, 2)),
 	        nn.BatchNorm2d(32),
             nn.ReLU(),
+		nn.Conv2d(32, 32, (1, 25)),
+            nn.AvgPool2d((1, 2)),
+	        nn.BatchNorm2d(32),
+            nn.ReLU(),
+		nn.Conv2d(32, 32, (1, 25)),
+            nn.AvgPool2d((1, 2)),
+	        nn.BatchNorm2d(32),
+            nn.ReLU(),
+		nn.Conv2d(32, 32, (1, 25)),
+            nn.AvgPool2d((1, 2)),
+	        nn.BatchNorm2d(32),
+            nn.ReLU(),
+		nn.Conv2d(32, 32, (1, 25)),
+            nn.AvgPool2d((1, 2)),
+	        nn.BatchNorm2d(32),
+            nn.ReLU(),
+		nn.Conv2d(32, 32, (1, 25)),
+            nn.AvgPool2d((1, 2)),
+	        nn.BatchNorm2d(32),
+            nn.ReLU(),
+		nn.Conv2d(32, 32, (1, 25)),
+            nn.AvgPool2d((1, 2)),
+	        nn.BatchNorm2d(32),
+            nn.ReLU(),
+		nn.Conv2d(32, 32, (1, 25)),
+	        nn.BatchNorm2d(32),
+            nn.ReLU(),
             nn.Flatten(),
-            nn.Linear(7616, np.prod(self.fmri_dimensions))
+		nn.Linear(10880, 50),
+		nn.ReLU(),
+            nn.Linear(50, np.prod(self.fmri_dimensions), False),
+		nn.Tanh()
         ).double()
 
     def forward(self, x):
@@ -54,7 +73,7 @@ class ConvolutionalModel(pl.LightningModule):
         return loss
 
     def configure_optimizers(self):
-        return torch.optim.Adam(self.parameters(), lr=0.2)
+        return torch.optim.Adam(self.parameters(), lr=0.01, weight_decay=0.01)
 
 
 class TransformerModel(pl.LightningModule):
@@ -68,31 +87,49 @@ class TransformerModel(pl.LightningModule):
         self.fmri_dimensions = [64, 64, 32]
 
         self.encoder = nn.Sequential(
-            nn.Conv2d(1, 4, (1, 5), stride=(1, 4)),
+            nn.AvgPool2d((1, 4)),
+            nn.Conv2d(1, 32, (1, 25)),
             nn.AvgPool2d((1, 2)),
-	        nn.BatchNorm2d(4),
+	        nn.BatchNorm2d(32),
             nn.ReLU(),
-            nn.Conv2d(4, 8, (1, 5), stride=(1, 4)),
+		nn.Conv2d(32, 32, (1, 25)),
             nn.AvgPool2d((1, 2)),
-	        nn.BatchNorm2d(8),
+	        nn.BatchNorm2d(32),
             nn.ReLU(),
-            nn.Conv2d(8, 16, (1, 5), stride=(1, 4)),
+		nn.Conv2d(32, 32, (1, 25)),
             nn.AvgPool2d((1, 2)),
-	        nn.BatchNorm2d(16),
+	        nn.BatchNorm2d(32),
             nn.ReLU(),
-            nn.Conv2d(16, 32, (1, 5), stride=(1, 4)),
+		nn.Conv2d(32, 32, (1, 25)),
             nn.AvgPool2d((1, 2)),
+	        nn.BatchNorm2d(32),
+            nn.ReLU(),
+		nn.Conv2d(32, 32, (1, 25)),
+            nn.AvgPool2d((1, 2)),
+	        nn.BatchNorm2d(32),
+            nn.ReLU(),
+		nn.Conv2d(32, 32, (1, 25)),
+            nn.AvgPool2d((1, 2)),
+	        nn.BatchNorm2d(32),
+            nn.ReLU(),
+		nn.Conv2d(32, 32, (1, 25)),
+            nn.AvgPool2d((1, 2)),
+	        nn.BatchNorm2d(32),
+            nn.ReLU(),
+		nn.Conv2d(32, 32, (1, 25)),
 	        nn.BatchNorm2d(32),
             nn.ReLU()
         ).double()
 
-        self.transformer_encoder_layer = nn.TransformerEncoderLayer(32 * 7, 8).double()
+        self.transformer_encoder_layer = nn.TransformerEncoderLayer(32 * 10, 8).double()
         self.transformer = nn.TransformerEncoder(self.transformer_encoder_layer, 6).double()
 
         self.decoder = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(34 * 32 * 7, 500),
-            nn.Linear(500, np.prod(self.fmri_dimensions))
+            nn.Linear(34 * 32 * 10, 100),
+		nn.ReLU(),
+            nn.Linear(100, np.prod(self.fmri_dimensions), False),
+		nn.Tanh()
         ).double()
 
     def forward(self, x):
@@ -116,5 +153,6 @@ class TransformerModel(pl.LightningModule):
         return loss
 
     def configure_optimizers(self):
-        return torch.optim.Adam(self.parameters(), lr=0.2)
+        return torch.optim.Adam(self.parameters(), lr=0.01, weight_decay=0.01)
+
 

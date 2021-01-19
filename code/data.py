@@ -27,7 +27,7 @@ class OddballDataset(Dataset):
         self.samples_per_block = 155
         self.blocks_per_subject = 6
         self.samples_per_subject = self.samples_per_block * self.blocks_per_subject
-        self.subject_count = len(os.listdir(self.root_dir))
+        self.subject_count = 1 #len(os.listdir(self.root_dir))
         self.skipped_samples_per_block = 170 - self.samples_per_block
         self.eeg_frequency = 1000  # Hz
         self.fmri_period = 2  # seconds
@@ -72,7 +72,9 @@ class OddballDataset(Dataset):
 
         # Standardize EEG and fMRI sample data using pre-computed values
         eeg_sample_data = (eeg_sample_data - 0.8) / 27.41
-        fmri_sample_data = (fmri_sample_data - 482.87) / 787.4
+        fmri_sample_data += 300
+        fmri_sample_data = (np.log10(fmri_sample_data) - 1.4) / 3.76
+        fmri_sample_data = fmri_sample_data * 2 - 1
 
         # Convert to Pytorch tensors
         eeg_sample_data = torch.from_numpy(eeg_sample_data)
@@ -125,3 +127,47 @@ def compute_standardization_parameters(dataset):
 
     print('EEG', np.mean(full_eeg_data), np.std(full_eeg_data))
     print('fMRI', np.mean(full_fmri_data), np.std(full_fmri_data))
+
+
+def compute_normalization_parameters(dataset):
+    """Compute min and max of all EEG and fMRI data"""
+    full_eeg_data = []
+    full_fmri_data = []
+
+    # Load all EEG and fMRI data
+    for subject in range(dataset.subject_count):
+        for block in range(dataset.blocks_per_subject):
+            subject_path = dataset.root_dir + '/sub' + f'{(subject + 1):03}/'
+            block_path = 'task' + f'{(block // 3 + 1):03}' + \
+                '_run' + f'{(block % 3 + 1):03}/'
+            eeg_path = subject_path + 'EEG/' + block_path + 'EEG_rereferenced.mat'
+            fmri_path = subject_path + 'BOLD/' + block_path + 'bold_mcf_brain.nii.gz'
+
+            eeg_block_data = loadmat(eeg_path)['data_reref']
+            fmri_block_data = nib.load(fmri_path).get_fdata()
+
+            full_eeg_data += [eeg_block_data]
+            full_fmri_data += [fmri_block_data]
+
+    print('EEG', np.min(full_eeg_data), np.max(full_eeg_data))
+    print('fMRI', np.min(full_fmri_data), np.max(full_fmri_data))
+
+
+def extract_channel_data(dataset):
+    eeg_channel_data = [[] for _ in range(34) ]
+    
+    # Load all EEG and fMRI data
+    for subject in range(dataset.subject_count):
+        for block in range(dataset.blocks_per_subject):
+            subject_path = dataset.root_dir + '/sub' + f'{(subject + 1):03}/'
+            block_path = 'task' + f'{(block // 3 + 1):03}' + \
+                '_run' + f'{(block % 3 + 1):03}/'
+            eeg_path = subject_path + 'EEG/' + block_path + 'EEG_rereferenced.mat'
+
+            eeg_block_data = loadmat(eeg_path)['data_reref']
+
+            for i in range(34):
+                eeg_channel_data[i] += [eeg_block_data[i]]
+
+    return eeg_channel_data
+
