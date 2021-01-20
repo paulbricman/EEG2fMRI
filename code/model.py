@@ -9,47 +9,48 @@ class TransformerModel(pl.LightningModule):
 
     def __init__(self):
         super().__init__()
-        self.eeg_frequency = 1000  # Hz
-        self.sample_length = 30  # seconds
-        self.eeg_channels = 34
-        self.eeg_sample_length = self.eeg_frequency * self.sample_length
-        self.fmri_dimensions = [53, 63, 52]
-        self.flattened_slice_length = 63 * 52
 
-        # Start of sequence embedding
-        self.sos = nn.Embedding(1, self.flattened_slice_length).double()
+        self.sos_emb = nn.Embedding(1, 63 * 52).double()
+        self.channel_pos_emb = nn.Embedding(34, 63 * 52).double()
+        self.slice_pos_emb = nn.Embedding(53, 63 * 52).double()
 
-        # Encoder for generating channel embeddings from channel recordings
-        self.encoder = nn.Linear(30000, self.flattened_slice_length).double()
-
-        # Transformer for generating slices from channel embeddings
-        self.transformer = nn.Transformer(self.flattened_slice_length).double()
+        self.encoder = nn.Linear(7500, 63 * 52).double()
+        self.transformer = nn.Transformer(63 * 52).double()
 
     def forward(self, x, y):
-        batch_size = x.size(0)
-        channel_recordings = x.view(batch_size * self.eeg_channels, self.eeg_sample_length)
+        # Downsample to 250 Hz
+        x = nn.AvgPool2d(x, (1, 4))
 
         # Generate channel embeddings from channel recordings
-        channel_embeddings = self.encoder(channel_recordings)
-        channel_embeddings = channel_embeddings.view(self.eeg_channels, batch_size, self.flattened_slice_length)
+        channel_emb = torch.cat([self.encoder(sample) for sample in x]) # N, S, E
 
-        # TODO apply positional embeddings
-        # Generate slices from channel embeddings
-        tgt = y.view(53, batch_size, self.flattened_slice_length)
-        tgt = torch.cat((self.sos, tgt[:-1]))
-        mask = (torch.triu(torch.ones(53, 53)) == 1).transpose(0, 1)
-        slices = self.transformer(channel_embeddings, tgt, tgt_mask = mask)
+        # Apply channel positional embeddings
+        channel_emb = torch.cat([sample + self.channel_pos_emb for sample in channel_emb]) # N, S, E
+
+        # Shift slices in target
+        slices = y.view(y.size(0), 53, 63 * 52)
+        slices = torch.cat([torch.cat((self.sos_emb, sample[:-1])) for sample in slices])
+
+        # Apply slice positional embeddings
+        slices = torch.cat([sample + self.slice_pos_emb for sample in slices]) # N, T, E
+
+        # Apply slice positional embeddings
+        channel_emb = torch.moveaxis(channel_emb, 1, 0)
+        slices = torch.moveaxis(slices, 1, 0)
+
+        mask = self.transformer.generate_square_subsequent_mask(53)
+        output = self.transformer(channel_emb, slices, tgt_mask = mask)
         
 
     def training_step(self, batch, batch_idx):
         x, y = batch
-        loss = F.mse_loss(y, self.forward(x))
+        loss = F.mse_loss(y, self.forward(x, y))
         self.log('train_loss', loss)
         return loss
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
-        loss = F.mse_loss(y, self.forward(x))
+        loss = F.mse_loss(y, self.forward(x, y))
         self.log('val_loss', loss, prog_bar=True)
         return loss
 
