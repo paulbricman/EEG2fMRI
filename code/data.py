@@ -79,7 +79,8 @@ class OddballDataset(Dataset):
 
         # Standardize EEG and fMRI sample data using pre-computed values
         eeg_sample_data = (eeg_sample_data - 0.8) / 27.41
-        # TODO log-transform fmri sample
+        fmri_sample_data += 500
+        fmri_sample_data = (np.log10(fmri_sample_data) - 1.4) / 3.76
 
         # Convert to Pytorch tensors
         eeg_sample_data = torch.from_numpy(eeg_sample_data)
