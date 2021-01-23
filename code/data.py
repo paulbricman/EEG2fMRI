@@ -91,9 +91,9 @@ class OddballDataset(Dataset):
 
 def fmri_preview(volume):
     """Preview central slices of an fMRI volume across its 3 dimensions."""
-    slice_sagital = volume[32, :, :]
-    slice_coronal = volume[:, 32, :]
-    slice_horizontal = volume[:, :, 16]
+    slice_sagital = volume[26, :, :]
+    slice_coronal = volume[:, 31, :]
+    slice_horizontal = volume[:, :, 26]
 
     fig, axes = plt.subplots(1, 3)
     for i, slice in enumerate([slice_sagital, slice_coronal, slice_horizontal]):
