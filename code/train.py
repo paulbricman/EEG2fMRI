@@ -4,18 +4,15 @@ import torch
 from data import OddballDataset
 from model import ConvolutionalModel
 
-dataset = OddballDataset('../../OddballData')
+train_subj_sel = [e for e in range(1, 18) if e not in [4, 16, 17]]
+val_subj_sel = [16, 17]
 
-train_prop, test_prop = 0.8, 0.1
-train_size = int(train_prop * len(dataset))
-test_size = int(test_prop * len(dataset))
-val_size = len(dataset) - train_size - test_size
+train_dataset = OddballDataset('../../OddballData', train_subj_sel)
+val_dataset = OddballDataset('../../OddballData', val_subj_sel)
 
-batch_size = 128
-train_dataset, test_dataset, val_dataset = torch.utils.data.random_split(dataset, [train_size, test_size, val_size], generator=torch.Generator().manual_seed(0))
-train_loader = DataLoader(train_dataset, num_workers=32, batch_size=batch_size, shuffle=True, drop_last=True)
-val_loader = DataLoader(val_dataset, num_workers=32, batch_size=batch_size, drop_last=True)
+train_loader = DataLoader(train_dataset, num_workers=32, batch_size=64, shuffle=True)
+val_loader = DataLoader(val_dataset, num_workers=32, batch_size=64)
 
 model = ConvolutionalModel()
-trainer = pl.Trainer(gpus=4, accelerator='dp', max_epochs=1, track_grad_norm=2, check_val_every_n_epoch=5, gradient_clip_val=0.1)
+trainer = pl.Trainer(gpus=[2, 3], accelerator='dp', max_epochs=1000, track_grad_norm=2)
 trainer.fit(model, train_loader, val_loader)
