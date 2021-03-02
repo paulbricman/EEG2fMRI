@@ -2,25 +2,30 @@ import pytorch_lightning as pl
 from torch.utils.data import DataLoader
 import torch
 from data import OddballDataset, fmri_preview
-from model import ConvolutionalModel, TransformerModel
-
-def reconstruct(volume):
-	volume = (volume + 1) / 2 * 3.76 +1.4
-	volume = 10 ** volume
-	return volume
+from model import TransformerModel
+import numpy as np
 
 trained_model = TransformerModel.load_from_checkpoint('./trained.ckpt')
+trained_model.eval()
 
-def compare(idx):
-	sample = OddballDataset('../../OddballData')[600]
-	eeg_sample = sample[0].view(1, 1, 34, 30000)
-	pred = trained_model(eeg_sample).detach().numpy()
-	pred = reconstruct(pred)
+train_subj_sel = [e for e in range(1, 18) if e not in [2, 4]]
+val_subj_sel = [2]
 
-	gt = reconstruct(sample[1])
+train_dataset = OddballDataset('../../OddballData', train_subj_sel)
+val_dataset = OddballDataset('../../OddballData', val_subj_sel)
 
-	fmri_preview(gt)
-	fmri_preview(pred[0])
+train_loader = DataLoader(train_dataset, num_workers=32, batch_size=8, shuffle=True, drop_last=True)
+val_loader = DataLoader(val_dataset, num_workers=32, batch_size=8, shuffle=True, drop_last=True)
 
-compare(0)
-compare(600)
+for i_batch, sample_batched in enumerate(val_loader):
+	if i_batch == 0:
+		pred = trained_model.forward(sample_batched[0][0], mode = 'test')
+
+		for i in range(8):
+			#fmri_preview(sample_batched[1][0][i].detach().numpy())			
+			#fmri_preview(sample_batched[1][1][i].detach().numpy())
+			fmri_preview(torch.mul(sample_batched[1][0][i], sample_batched[1][1][i]).detach().numpy())
+			fmri_preview(torch.mul(pred[i], sample_batched[1][1][i]).detach().numpy())
+	break
+
+

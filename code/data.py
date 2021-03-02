@@ -5,6 +5,8 @@ import nibabel as nib
 from scipy.io import loadmat
 
 import os
+import glob
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -31,17 +33,18 @@ class OddballDataset(Dataset):
         subj_idx = self.subj_sel[subj_sel_idx]
         block_idx = (idx % (6 * 155)) // 155
         sample_idx = idx % 155
+        subj_sample_idx = block_idx * 170 + 15 + sample_idx
 
         # Computing sample data location in block recording
         eeg_start_idx = sample_idx * 2000
         eeg_end_idx = eeg_start_idx + 30000
-        fmri_idx = sample_idx + 15
 
         # Loading EEG and fMRI data from sample block
         subj_path = self.root_dir + '/sub' + f'{subj_idx:03}/'
         eeg_path = subj_path + 'EEG/' + 'task' + f'{(block_idx // 3 + 1):03}' + \
             '_run' + f'{(block_idx % 3 + 1):03}/' + 'EEG_rereferenced.mat'
         mask_path = subj_path + 'BOLD/mask.nii'
+        mean_path = subj_path + 'BOLD/mean.nii'
 
         if block_idx < 3:
             block_type = 'auditory'
@@ -50,29 +53,32 @@ class OddballDataset(Dataset):
 	    
         fmri_path = subj_path + 'BOLD/swarsub-' + f'{subj_idx:02}_task-' + \
             block_type + 'oddballwithbuttonresponsetotargetstimuli_run-' + \
-            f'{(block_idx % 3 + 1):02}_' + 'bold.nii'
+            f'{(block_idx % 3 + 1):02}_bold_norm_' + f'{subj_sample_idx + 1}' + '.nii'
 
         eeg_block_data = loadmat(eeg_path)['data_reref']
-        fmri_block_data = nib.load(fmri_path).get_fdata()
+        fmri_sample_data = nib.load(fmri_path).get_fdata()
         mask_data = nib.load(mask_path).get_fdata()
+        mean_data = nib.load(mean_path).get_fdata()
+
+        #fmri_sample_data = np.divide(fmri_sample_data, mean_data, out=np.ones_like(fmri_sample_data), where=mean_data!=0) - 1
+        fmri_sample_data = (fmri_sample_data - mean_data)
 
         # Extract relevant sample data from block
         eeg_block_data = eeg_block_data[:34]
-        fmri_block_data = np.moveaxis(fmri_block_data, -1, 0)
 
         eeg_sample_data = np.array(
             [eeg_block_data[channel][eeg_start_idx:eeg_end_idx] for channel in range(len(eeg_block_data))])
-        fmri_sample_data = fmri_block_data[fmri_idx]
 
         # Standardize EEG and fMRI sample data using pre-computed values
         eeg_sample_data = (eeg_sample_data + 2286) / 4200
-        fmri_sample_data = (fmri_sample_data + 419) / 4555
 
         # Convert to Pytorch tensors
         eeg_sample_data = torch.from_numpy(eeg_sample_data.astype('float32'))
         fmri_sample_data = torch.from_numpy(fmri_sample_data.astype('float32'))
         subject = torch.from_numpy(np.array([subj_idx / 100]).astype('float32'))
         mask_data = torch.from_numpy(mask_data)
+
+        eeg_sample_data = eeg_sample_data
 
         return [[eeg_sample_data, subject], [fmri_sample_data, mask_data]]
 
@@ -86,6 +92,9 @@ def fmri_preview(volume):
     fig, axes = plt.subplots(1, 3)
     for i, slice in enumerate([slice_sagital, slice_coronal, slice_horizontal]):
         axes[i].imshow(slice.T, cmap="viridis", origin="lower")
+
+    figManager = plt.get_current_fig_manager()
+    figManager.window.showMaximized()
 
     plt.show()
 
@@ -172,3 +181,15 @@ def extract_channel_data(dataset):
                 eeg_channel_data[i] += [eeg_block_data[i]]
 
     return eeg_channel_data
+
+
+def compute_mean_subj_scans(dataset):
+    for subj_idx in range(1, 18):
+        subj_path = dataset.root_dir + '/sub' + f'{subj_idx:03}/BOLD/'
+        scan_files = glob.glob(os.path.join(subj_path, 's*.nii'))
+        scan_files = [nib.load(e).get_fdata() for e in scan_files]
+        mean_scan = np.mean(scan_files, axis=0)
+        print(mean_scan.shape)
+        mean_scan = nib.Nifti1Image(mean_scan, np.eye(4))
+        nib.save(mean_scan, os.path.join(subj_path, 'mean.nii'))
+        
