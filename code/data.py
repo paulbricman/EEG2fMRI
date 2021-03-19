@@ -41,7 +41,8 @@ class OddballDataset(Dataset):
 
         # Loading EEG and fMRI data from sample block
         subj_path = self.root_dir + '/sub' + f'{subj_idx:03}/'
-        eeg_path = subj_path + 'EEG/' + 'task' + f'{(block_idx // 3 + 1):03}' + \
+        eeg_base_path = subj_path + 'EEG/'
+        eeg_path = eeg_base_path + 'task' + f'{(block_idx // 3 + 1):03}' + \
             '_run' + f'{(block_idx % 3 + 1):03}/' + 'EEG_rereferenced.mat'
         mask_path = subj_path + 'BOLD/mask.nii'
         mean_path = subj_path + 'BOLD/mean.nii'
@@ -56,12 +57,14 @@ class OddballDataset(Dataset):
             f'{(block_idx % 3 + 1):02}_bold_norm_' + f'{subj_sample_idx + 1}' + '.nii'
 
         eeg_block_data = loadmat(eeg_path)['data_reref']
+        eeg_norm_stats = np.loadtxt(eeg_base_path + 'norm_stats.csv', delimiter=',')
         fmri_sample_data = nib.load(fmri_path).get_fdata()
         mask_data = nib.load(mask_path).get_fdata()
         mean_data = nib.load(mean_path).get_fdata()
 
         #fmri_sample_data = np.divide(fmri_sample_data, mean_data, out=np.ones_like(fmri_sample_data), where=mean_data!=0) - 1
-        fmri_sample_data = (fmri_sample_data - mean_data)
+        #fmri_sample_data = (fmri_sample_data - mean_data)
+        fmri_sample_data = fmri_sample_data - 100
 
         # Extract relevant sample data from block
         eeg_block_data = eeg_block_data[:34]
@@ -70,15 +73,15 @@ class OddballDataset(Dataset):
             [eeg_block_data[channel][eeg_start_idx:eeg_end_idx] for channel in range(len(eeg_block_data))])
 
         # Standardize EEG and fMRI sample data using pre-computed values
-        eeg_sample_data = (eeg_sample_data + 2286) / 4200
+        eeg_sample_data = np.array(
+            [(eeg_sample_data[channel] - eeg_norm_stats[channel][0]) / (eeg_norm_stats[channel][1] - eeg_norm_stats[channel][0]) for channel in range(len(eeg_sample_data))])
 
         # Convert to Pytorch tensors
         eeg_sample_data = torch.from_numpy(eeg_sample_data.astype('float32'))
         fmri_sample_data = torch.from_numpy(fmri_sample_data.astype('float32'))
         subject = torch.from_numpy(np.array([subj_idx / 100]).astype('float32'))
         mask_data = torch.from_numpy(mask_data)
-
-        eeg_sample_data = eeg_sample_data
+        fmri_sample_data = torch.mul(fmri_sample_data, mask_data).float()
 
         return [[eeg_sample_data, subject], [fmri_sample_data, mask_data]]
 
@@ -192,4 +195,21 @@ def compute_mean_subj_scans(dataset):
         print(mean_scan.shape)
         mean_scan = nib.Nifti1Image(mean_scan, np.eye(4))
         nib.save(mean_scan, os.path.join(subj_path, 'mean.nii'))
-        
+
+def compute_eeg_norm_stats(dataset):
+    for subj_idx in range(1, 18):
+        eeg_subj_data = []
+        # Loading EEG and fMRI data from sample block
+        subj_path = dataset.root_dir + '/sub' + f'{subj_idx:03}/'
+        eeg_base_path = subj_path + 'EEG/'
+        for block_idx in range(6):
+            eeg_path = eeg_base_path + 'task' + f'{(block_idx // 3 + 1):03}' + \
+                '_run' + f'{(block_idx % 3 + 1):03}/' + 'EEG_rereferenced.mat'
+
+            eeg_block_data = loadmat(eeg_path)['data_reref']
+            eeg_block_data = eeg_block_data[:34]
+            eeg_subj_data += [eeg_block_data]
+        eeg_subj_data = np.swapaxes(np.array(eeg_subj_data), 0, 1).reshape((34, -1))
+        eeg_subj_data = np.array([(np.min(e), np.max(e)) for e in eeg_subj_data])
+        np.savetxt(eeg_base_path + 'norm_stats.csv', eeg_subj_data, delimiter=',')
+
