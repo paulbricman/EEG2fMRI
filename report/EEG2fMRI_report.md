@@ -6,7 +6,11 @@ Current techniques for recording neural activity are limited. EEG (based on elec
 
 ## Implementation
 
-We used a dataset from a multi-modal neuroimaging study from which we derived individual samples with the following structure. The input part of a data point consists of a 30-second-long EEG recording across 34 electrodes at 1000Hz. This data resembles 34 parallel time series unfolding across 30 seconds. Each time series comes from a certain electrode placed in a certain place on the subject's scalp. The output part of a data point consists of a three-dimensional tensor of shape 53x63x52 which depicts the 3D "picture" of the subject's brain obtained through fMRI at the time roughly corresponding to the end of the EEG recording.
+We used a dataset from a multi-modal neuroimaging study from which we derived individual samples with the following structure. The input part of a data point consists of a 30-second-long EEG recording across 34 electrodes at 1000Hz. This data resembles 34 parallel time series unfolding across 30 seconds. Each time series comes from a certain electrode placed in a certain place on the subject's scalp. 
+
+![](./eeg.png)
+
+The output part of a data point consists of a three-dimensional tensor of shape 53x63x52 which depicts the 3D "picture" of the subject's brain obtained through fMRI at the time roughly corresponding to the end of the EEG recording.
 
 For the input part of a data point, the recording length of 30 seconds has been chosen for the following reason. fMRI doesn't record neural activity per se, but blood oxygen levels, the BOLD response, which is a reasonable proxy for neural activity. However, the BOLD response isn't an immediate one-to-one reflection of neural activity, but the result of a convolution between neural activity and a response curve informed by the brain's physiology (the BOLD response curve). This is conceptually similar to how "eating" activity isn't instantly reflected in blood sugar levels, but reflects the result of a convolution informed by metabolism. In the case of fMRI, recordings at any given time are influenced by neural activity which occured roughly during the previous 30 seconds. That's why 30 seconds of EEG are paired with one fMRI scan obtained at the end of the EEG recording, forming a data point. In contrast, EEG data itself closely reflects neural activity unfolding at that exact time of recording (albeit with very poor spatial resolution).
 
@@ -18,4 +22,18 @@ We trained models with various architectures, including: fully-connected, convol
 
 ## Results & Obstacles
 
-In the case in which data from all subjects is shuffled randomly into training and testing data, testing performance eventually becomes very good. However, if the testing data is configured to only contain data from a subject which has not been part of the training phase at all, then testing performance doesn't reach a useful level. In the one-subject-left-out setup, the model fails to generalize to the unseen subject. To tackle this, we tried: dropout, weight decay, batch normalization, and reducing model complexity. Still, generalization to an unseen subject remains challenging.
+In the case in which data from all subjects is shuffled randomly into training and testing data, testing performance eventually becomes very good.
+
+### Target
+![](./within.png)
+
+### Prediction
+![](./within_pred.png)
+
+However, if the testing data is configured to only contain data from a subject which has not been part of the training phase at all, then testing performance doesn't reach a useful level. In the one-subject-left-out setup, the model fails to generalize to the unseen subject. To tackle this, we tried: dropout, weight decay, batch normalization, and reducing model complexity. Still, generalization to an unseen subject remains challenging.
+
+### Target
+![](./between.png)
+
+### Prediction
+![](./between_pred.png)
