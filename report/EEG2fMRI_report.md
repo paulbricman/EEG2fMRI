@@ -24,9 +24,11 @@ In terms of preprocessing, EEG data was normalized per subject AND per channel. 
 
 ## Models
 
-Initially, we trained fully-connected models to perform the mapping between the short EEG recording and the analogous fMRI scan. A component of this model was designed to derive embeddings from individual EEG channels, meaning that the same component could be trained and used to derive embeddings for each separate channel. Afterwards, all channels would be concatenated and fed through a common fully-connected network whose number of output neurons corresponded to the number of voxels in the fMRI scan. 
+Initially, we trained fully-connected models to perform the mapping between the short EEG recording and the analogous fMRI scan. A component of this model was designed to derive embeddings from individual EEG channels, meaning that the same component could be trained and used to derive embeddings for each separate channel. Afterwards, all channels would be concatenated and fed through a common fully-connected network whose number of output neurons corresponded to the number of voxels in the fMRI scan.
 
-We trained models with various architectures, including: fully-connected, convolutional, transformer-based, and combinations of the previous. We tweaked activation functions, loss functions, optimizers, learning rates, batch size, layer sizes, learning rate schedules, and others.
+We also trained models whose channel embedding components were based on convolutional layers spanning the time axis, rather than fully-connected ones. Additionally, we experimented with transformers after framing the EEG-fMRI problem as a sequence-to-sequence transduction task from EEG channels to fMRI slices.
+
+We also tried tweaking activation functions, loss functions, optimizers, learning rates, batch size, layer sizes, learning rate schedules, and other hyperparameters in the process.
 
 ## Results & Obstacles
 
