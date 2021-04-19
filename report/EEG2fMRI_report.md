@@ -2,13 +2,13 @@
 Paul Bricman, Jelmer Borst
 
 ## Problem Statement
-Current techniques for recording neural activity are limited. EEG (based on electrodes placed on the subject's scalp) is a neuroimaging technique with high temporal resolution (sampling frequency), yet poor spatial resolution (due to the signal being obstructed and filtered by the brain and the skull). In contrast, fMRI is a technique with high spatial resolution (due to its reliance on electromagnetic waves which penetrate the brain), yet poor temporal resolution. There is no one-size-fits-all neuroimaging technique and neuroscients often have to make compromises based on their object of study.
+Current techniques for recording neural activity are limited. EEG (based on electrodes placed on the subject's scalp) is a neuroimaging technique with high temporal resolution (sampling frequency), yet poor spatial resolution (due to the signal being obstructed and filtered by the brain and the skull). In contrast, fMRI is a technique with high spatial resolution (due to its reliance on electromagnetic waves which penetrate the brain), yet poor temporal resolution. There is no one-size-fits-all neuroimaging technique available and neuroscients often have to make compromises based on their object of study.
 
 ## Suggested Solution
 
 Neural activity is the target of recording for both EEG and fMRI. Therefore, it's possible that the EEG signal could be used to somehow "triangulate" neural activity at the precise locations captured by fMRI, at least in brain regions located near the scalp. Essentially, a machine learning model could be used to approximately reconstruct fMRI samples based on EEG samples. Multi-modal neuroimaging studies provide a unique opportunity for exploring this mapping. Those studies are based on simultaneous recordings with both EEG and fMRI, providing a perfectly aligned cross-modal signal which a machine learning model could use for training. A model capable of supporting this mapping would greatly augment the spatial resolution which can be achieved with EEG. 
 
-## Implementation
+## Data
 
 We used a dataset from a multi-modal neuroimaging study which involved visual and auditory oddball tasks.[^1] The reason we chose this dataset, among other multi-modal neuroimaging ones, was that visual and auditory areas might be easier for the model to distinguish compared to more distributed networks of regions. Based on this dataset, we derived individual samples with the following structure. The input part of a data point consists of a 30-second-long EEG recording across 34 electrodes at 1000Hz. This data resembles 34 parallel time series unfolding across 30 seconds. Each time series comes from a certain electrode placed in a certain place on the subject's scalp.
 
@@ -26,9 +26,7 @@ In terms of preprocessing, EEG data was normalized per subject AND per channel. 
 
 Initially, we trained fully-connected models to perform the mapping between the short EEG recording and the analogous fMRI scan. A component of this model was designed to derive embeddings from individual EEG channels, meaning that the same component could be trained and used to derive embeddings for each separate channel. Afterwards, all channels would be concatenated and fed through a common fully-connected network whose number of output neurons corresponded to the number of voxels in the fMRI scan.
 
-We also trained models whose channel embedding components were based on convolutional layers spanning the time axis, rather than fully-connected ones. Additionally, we experimented with transformers after framing the EEG-fMRI problem as a sequence-to-sequence transduction task from EEG channels to fMRI slices.
-
-We also tried tweaking activation functions, loss functions, optimizers, learning rates, batch size, layer sizes, learning rate schedules, and other hyperparameters in the process.
+We also trained models whose channel embedding components were based on convolutional layers spanning the time axis, rather than fully-connected ones. Additionally, we experimented with transformers after framing the EEG-fMRI problem as a sequence-to-sequence transduction task from EEG channels to fMRI slices. We also tried tweaking activation functions, loss functions, optimizers, learning rates, batch size, layer sizes, learning rate schedules, and other hyperparameters in the process.
 
 ## Results & Obstacles
 
