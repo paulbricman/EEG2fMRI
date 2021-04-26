@@ -1,8 +1,8 @@
 # Fdb version 3
-["pdflatex"] 1619178229 "/home/paubric/Projects/EEG2fMRI/article/article.tex" "/home/paubric/Projects/EEG2fMRI/article/article.pdf" "article" 1619178229
+["pdflatex"] 1619441385 "/home/paubric/Projects/EEG2fMRI/article/article.tex" "/home/paubric/Projects/EEG2fMRI/article/article.pdf" "article" 1619441385
   "/etc/texmf/web2c/texmf.cnf" 1601391940 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/paubric/Projects/EEG2fMRI/article/article.aux" 1619178229 412 0e68f0ca5d4ced436b46fa62a74458d6 ""
-  "/home/paubric/Projects/EEG2fMRI/article/article.tex" 1619178228 9663 ad7bf4e088668a347badcc368657ce85 ""
+  "/home/paubric/Projects/EEG2fMRI/article/article.aux" 1619441385 553 802941984ccf4be24a91227aed1e4d2c ""
+  "/home/paubric/Projects/EEG2fMRI/article/article.tex" 1619441384 11510 7ee6d0ed82d4438415ab63554b5415ec ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1480098701 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr12.tfm" 1480098701 1288 655e228510b4c2a1abe905c368440826 ""
@@ -42,12 +42,12 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1520210507 32485 c64754543d8ac501bea6e75e209ea521 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1601481408 127853 b41f58aff49fe1af38af8d065f49d51c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1601392466 724918 9c759ba13a13f933403c6528a57c3086 ""
-  "article.aux" 1619178229 412 0e68f0ca5d4ced436b46fa62a74458d6 ""
-  "article.tex" 1619178228 9663 ad7bf4e088668a347badcc368657ce85 ""
+  "article.aux" 1619441385 553 802941984ccf4be24a91227aed1e4d2c ""
+  "article.tex" 1619441384 11510 7ee6d0ed82d4438415ab63554b5415ec ""
   "eeg.png" 1619000886 1796820 f70cbdcac988c6f607b8b2078f26fdae ""
   (generated)
-  "article.log"
   "article.pdf"
   "article.aux"
   "/home/paubric/Projects/EEG2fMRI/article/article.pdf"
   "/home/paubric/Projects/EEG2fMRI/article/article.log"
+  "article.log"
