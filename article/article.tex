@@ -75,5 +75,9 @@ The reasoning behind employing a transformer architecture was the following. Whe
 
 \section{Results}
 
+In a setting in which the time course normalization is absent and the entire dataset is randomly shuffled into training data and testing data, all models except for the ones based on the transformer architecture manage to converge to non-trivial solutions on testing data. The predicted fMRI scans are more similar to the ground truth scans than both a global average scan and an subject-level  average scan, indicating that the models avoided the failure modes of resorting to outputing global or subject-level average scans regardless of EEG input.
+
+In contrast, in a setting in which either time course normalization is introduced or the train-test split policy is based on entirely leaving out one subject during training, no models manage to converge to non-trivial solutions on the testing data. In multiple configurations, the models either learn to output an average fMRI scan or learn to output a completely unrelated scan which is slightly influenced by EEG input.
+
 \section{Discussion}
 \end{document}
