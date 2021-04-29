@@ -80,4 +80,11 @@ In a setting in which the time course normalization is absent and the entire dat
 In contrast, in a setting in which either time course normalization is introduced or the train-test split policy is based on entirely leaving out one subject during training, no models manage to converge to non-trivial solutions on the testing data. In multiple configurations, the models either learn to output an average fMRI scan or learn to output a completely unrelated scan which is slightly influenced by EEG input.
 
 \section{Discussion}
+
+In this project we attempted to learn the mapping between EEG data and concurrent fMRI data through a host of machine learning model. The task proved to be particularly challenging, especially in a between-subject regime, where the model is tested on data originating from a subject not considered at all during training. This might indicate that subject-specific information is necessary for the model to be able to perform the EEG-fMRI mapping. Anatomical particularities specific to the subject might make generalization to new subjects difficult. In contrast, in a within-subject regime, most models perform well. However, the within-subject regime defeats the purpose of attempting the mapping, given that both neuroimaging methods involved are accessible.
+
+The difficulty in generalization might have been mainly caused by the limited size of the dataset considered, in the order of thousands. Deep learning models are known to require a large number of samples in order to generalize. Data augmentation methods such as performing random vertical shifts of the EEG signals and adding random noise had limited impact on generalization. The quantity of multimodal EEG-fMRI recordings remains a challenge for such a supervised approach to the cross-modal mapping. This challenge is likely caused by the difficulty in running experiments which not only make use of expensive fMRI machines, but which require additional expertise in EEG-fMRI compatibility and MR-compatible EEG headsets.
+
+This state of affairs suggests that self-supervised approaches are more suitable candidates for attempting this mapping. Large amounts of uni-modal EEG data are available, and the same is true for uni-modal fMRI data, although to a less extent. 
+
 \end{document}
