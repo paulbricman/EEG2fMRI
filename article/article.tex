@@ -14,12 +14,12 @@
 \maketitle
 
 \begin{abstract}
-    Functional neuroimaging techniques are essential in advancing research in neuroscience. However, existing techniques require researchers to either compromise on spatial resolution, temporal resolution, cost, or portability. We attempt to model the  mapping between concurrent EEG and fMRI recordings using various machine learning architectures, in order to combine the complementary qualities of the two modalities. Although initial results in a within-subject regime are promising, the limited quantity of multi-modal recordings currently available appears to be a major obstacle in generalizing to new subjects.
+    Functional neuroimaging techniques are essential in advancing research in neuroscience. However, existing techniques require researchers to either compromise on spatial resolution, temporal resolution, cost, or portability. We attempt to model the  mapping between concurrent EEG and fMRI recordings using various machine learning architectures, in order to combine the complementary qualities of the two modalities. The trained model is then able to reconstruct fMRI data from simultaneous EEG data. Although initial results in a within-subject regime are promising, the limited quantity of multi-modal recordings currently available appears to be a major obstacle in generalizing to new subjects.
 \end{abstract}
 
 \section{Introduction}
 
-Neural activity is central to investigating cognition. In cognitive neuroscience, it has been employed to study the neural correlates of many cognitive functions, such as perception, attention, and memory. In cognitive modelling, neural activity has been used to inform the development of a wide range of cognitive architectures. In clinical neuroscience, it has been employed for investigating, diagnosing, and ameliorating a wide range of neurological conditions. 
+Neural activity is central to investigating cognition. In cognitive neuroscience, it has been employed to study the neural correlates of many cognitive functions, such as perception, attention, and memory. In cognitive modelling, neural activity has been used to inform the development of a wide range of cognitive architectures. In clinical neuroscience, it has been employed for investigating, diagnosing, and ameliorating a wide range of neurological conditions \cite{n_functional_2015}.
 
 The increased relevance of neural activity in cognitive science prompted the development of a large number of functional neuroimaging techniques. These techniques can be effectively described in terms of spatial resolution, temporal resolution (sampling rate), and portability. The most widely used functional neuroimaging techniques are EEG and fMRI. EEG scanners consist of arrays of electrodes placed directly on the user's scalp. They are extremely portable and have high temporal resolution. However, such scanners can only detect neural activity after first being filtered by the skull, leading to a major decrease in spatial resolution. Conversely, fMRI is based on electromagnetic waves which easily penetrate the skull. Therefore, it has high spatial resolution, but is lacking in most other aspects. Compared to EEG, it is hundreds of times more expensive and thousands of times slower. Moreover, it is virtually unmovable by its user.
 
@@ -90,5 +90,8 @@ This state of affairs suggests that self-supervised approaches might be more sui
 Generating synthetic data based on an existing multi-modal dataset might be another way of tackling the issue of limited samples. While generative models have been successfully used to synthesize uni-modal data, the same cannot be said about synchronous multi-modal data. An even simpler solution to the problem might be to join all publicly available multi-modal EEG-fMRI datasets into one larger one, and learn the mapping based on the resulting dataset. However, those few datasets available which match the criterion typically use scanners with wildly different specifications. From the number of EEG channels used to the sampling frequency of the fMRI scanner, it might be challenging to merge those into a generic dataset.
 
 Learning the mapping between simultaneous EEG and fMRI recordings remains an open challenge which might enable powerful tools for neuroscientists of various specializations. The limited quantity of data currently available appears to be a major obstacle in solving this task.
+
+\bibliographystyle{plain}
+\bibliography{eeg2fmri}
 
 \end{document}
