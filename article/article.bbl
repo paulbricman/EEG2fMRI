@@ -1,9 +1,85 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{noauthor_auditory_nodate}
+Auditory and {Visual} {Oddball} {EEG}-{fMRI}.
+
+\bibitem{noauthor_functional_1993}
+Functional brain mapping by blood oxygenation level-dependent contrast magnetic
+  resonance imaging. {A} comparison of signal characteristics with a
+  biophysical model.
+\newblock {\em Biophysical Journal}, 64(3):803--812, March 1993.
+\newblock Publisher: Cell Press.
+
+\bibitem{bromley_signature_nodate}
+Jane Bromley, Isabelle Guyon, Yann LeCun, Eduard Säckinger, and Roopak Shah.
+\newblock Signature {Verification} using a "{Siamese}" {Time} {Delay} {Neural}
+  {Network}.
+\newblock page~8.
+
+\bibitem{calhas_eeg_2020}
+David Calhas and Rui Henriques.
+\newblock {EEG} to {fMRI} {Synthesis}: {Is} {Deep} {Learning} a candidate?
+\newblock {\em arXiv:2009.14133 [cs, stat]}, September 2020.
+\newblock arXiv: 2009.14133.
+
+\bibitem{dosovitskiy_image_2020}
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn,
+  Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg
+  Heigold, Sylvain Gelly, Jakob Uszkoreit, and Neil Houlsby.
+\newblock An {Image} is {Worth} 16x16 {Words}: {Transformers} for {Image}
+  {Recognition} at {Scale}.
+\newblock {\em arXiv:2010.11929 [cs]}, October 2020.
+\newblock arXiv: 2010.11929.
+
+\bibitem{huster_methods_2012}
+René~J. Huster, Stefan Debener, Tom Eichele, and Christoph~S. Herrmann.
+\newblock Methods for {Simultaneous} {EEG}-{fMRI}: {An} {Introductory}
+  {Review}.
+\newblock {\em Journal of Neuroscience}, 32(18):6053--6060, May 2012.
+\newblock Publisher: Society for Neuroscience Section: Toolbox.
+
+\bibitem{lample_phrase-based_2018}
+Guillaume Lample, Myle Ott, Alexis Conneau, Ludovic Denoyer, and Marc'Aurelio
+  Ranzato.
+\newblock Phrase-{Based} \& {Neural} {Unsupervised} {Machine} {Translation}.
+\newblock {\em arXiv:1804.07755 [cs]}, August 2018.
+\newblock arXiv: 1804.07755.
 
 \bibitem{n_functional_2015}
 Khanna N, Altmeyer W, Zhuo J, and Steven A.
 \newblock Functional {Neuroimaging}: {Fundamental} {Principles} and {Clinical}
   {Applications}.
 \newblock {\em The Neuroradiology Journal}, 28(2):87--96, April 2015.
+
+\bibitem{ostwald_eeg-fmri_2009}
+D.~Ostwald, C.~Porcaro, and A.~P. Bagshaw.
+\newblock {EEG}-{fMRI} signal integration: {An} information theoretic
+  framework.
+\newblock {\em NeuroImage}, 47:S101, July 2009.
+
+\bibitem{vaswani_attention_2017}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N. Gomez, Lukasz Kaiser, and Illia Polosukhin.
+\newblock Attention {Is} {All} {You} {Need}.
+\newblock {\em arXiv:1706.03762 [cs]}, December 2017.
+\newblock arXiv: 1706.03762.
+
+\bibitem{yi_generative_2019}
+Xin Yi, Ekta Walia, and Paul Babyn.
+\newblock Generative adversarial network in medical imaging: {A} review.
+\newblock {\em Medical Image Analysis}, 58:101552, December 2019.
+
+\bibitem{zhang_neural_2020}
+JiaJun Zhang and ChengQing Zong.
+\newblock Neural machine translation: {Challenges}, progress and future.
+\newblock {\em Science China Technological Sciences}, 63(10):2028--2050,
+  October 2020.
+
+\bibitem{zhuang_fmri_2019}
+Peiye Zhuang, Alexander~G. Schwing, and Oluwasanmi Koyejo.
+\newblock {FMRI} {Data} {Augmentation} {Via} {Synthesis}.
+\newblock In {\em 2019 {IEEE} 16th {International} {Symposium} on {Biomedical}
+  {Imaging} ({ISBI} 2019)}, pages 1783--1787, April 2019.
+\newblock ISSN: 1945-8452.
 
 \end{thebibliography}
