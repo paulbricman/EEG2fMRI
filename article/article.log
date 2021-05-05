@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2020.9.29)  4 MAY 2021 15:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2020.9.29)  5 MAY 2021 11:24
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -448,15 +448,15 @@ Underfull \hbox (badness 1215) in paragraph at lines 73--77
 
 ) [8] (/home/paubric/Projects/EEG2fMRI/article/article.aux) ) 
 Here is how much of TeX's memory you used:
- 1821 strings out of 494923
- 24439 string characters out of 6180742
- 78973 words of memory out of 5000000
- 5128 multiletter control sequences out of 15000+600000
+ 1822 strings out of 494923
+ 24448 string characters out of 6180742
+ 78981 words of memory out of 5000000
+ 5129 multiletter control sequences out of 15000+600000
  5795 words of font info for 21 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  41i,5n,25p,1160b,214s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on /home/paubric/Projects/EEG2fMRI/article/article.pdf (8 pages, 1720401 bytes).
+Output written on /home/paubric/Projects/EEG2fMRI/article/article.pdf (8 pages, 1720408 bytes).
 PDF statistics:
  62 PDF objects out of 1000 (max. 8388607)
  42 compressed objects within 1 object stream

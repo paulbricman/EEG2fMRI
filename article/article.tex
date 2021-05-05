@@ -14,7 +14,7 @@
 \maketitle
 
 \begin{abstract}
-    Functional neuroimaging techniques are essential in advancing research in neuroscience. However, existing techniques require researchers to either compromise on spatial resolution, temporal resolution, cost, or portability. We attempt to model the  mapping between concurrent EEG and fMRI recordings using various machine learning architectures, in order to combine the complementary qualities of the two modalities. The trained model is then able to reconstruct fMRI data from simultaneous EEG data. Although initial results in a within-subject regime are promising, the limited quantity of multi-modal recordings currently available appears to be a major obstacle in generalizing to new subjects.
+    Functional neuroimaging techniques are essential in advancing research in neuroscience. However, existing techniques require researchers to either compromise on spatial resolution, temporal resolution, cost, or portability. We attempt to model the  mapping between concurrent EEG and fMRI recordings using various machine learning architectures, in order to combine the complementary qualities of the two modalities. The trained model is then able to reconstruct simultaneous fMRI data solely from EEG data. Although initial results in a within-subject regime are promising, the limited quantity of multi-modal recordings currently available appears to be a major obstacle in generalizing to new subjects.
 \end{abstract}
 
 \section{Introduction}
@@ -45,13 +45,14 @@ The suitability of EEG-fMRI as a candidate pair for supervised cross-modal synth
 
 \section{Data}
 
-We used a dataset from a multi-modal neuroimaging study which involved visual and auditory oddball tasks \cite{noauthor_auditory_nodate}. The reason we chose this dataset, among other multi-modal neuroimaging ones, was that visual and auditory areas might be easier for the model to distinguish compared to more distributed networks of regions. Based on this dataset, we derived individual samples with the following structure. The input part of a data point consists of a 30-second-long EEG recording across 34 electrodes at 1000Hz. This data resembles 34 parallel time series unfolding across 30 seconds. Each time series originates from a certain electrode placed in a certain place on the subject's scalp.
+We used a dataset from a multi-modal neuroimaging study which involved visual and auditory oddball tasks \cite{noauthor_auditory_nodate}. The reason we chose this dataset, among other multi-modal neuroimaging ones, was that visual and auditory areas might be easier for the model to distinguish compared to more distributed networks of regions. Based on this dataset, we derived individual samples with the following structure. The input part of a data point consists of a 30-second-long EEG recording across 34 electrodes at 1000Hz. This data resembles 34 parallel time series unfolding across 30 seconds (Fig. \ref{fig:eeg}). Each time series originates from a certain electrode placed in a certain place on the subject's scalp.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{eeg.png}
     \caption{An input sample consisting of 34 parallel EEG signals}
-2\end{figure}
+    \label{fig:eeg}
+\end{figure}
 
 The output part of a data point consists of a three-dimensional tensor of shape 53x63x52 which depicts the 3D "picture" of the subject's brain obtained through fMRI at the time roughly corresponding to the end of the EEG recording.
 
