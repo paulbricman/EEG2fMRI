@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2020.9.29)  5 MAY 2021 11:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2020.9.29)  22 JUN 2021 17:47
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -431,35 +431,45 @@ Package grfext Info: Graphics extension search list:
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 )) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Overfull \hbox (3.5839pt too wide) in paragraph at lines 34--35
+[]\OT1/cmr/m/n/10 Several model ar-chi-tec-tures are con-sid-ered to this end, namely fully-connected
+ []
+
+[2]
 <eeg.png, id=15, 1819.79875pt x 936.49875pt>
 File: eeg.png Graphic file (type png)
 <use eeg.png>
-Package pdftex.def Info: eeg.png  used on input line 52.
+Package pdftex.def Info: eeg.png  used on input line 56.
 (pdftex.def)             Requested size: 345.0pt x 177.5365pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[3] [4 </home/paubric/Projects/EEG2fMRI/article/eeg.png>] [5] [6] (/home/paubric/Projects/EEG2fMRI/article/article.bbl [7]
+[3] [4 </home/paubric/Projects/EEG2fMRI/article/eeg.png>] [5]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 89.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 89.
+ [6] (/home/paubric/Projects/EEG2fMRI/article/article.bbl [7]
 Underfull \hbox (badness 1215) in paragraph at lines 73--77
 \OT1/cmr/m/n/10 lenges, progress and fu-ture.  \OT1/cmr/m/it/10 Sci-ence China Tech-no-log-i-cal Sci-ences\OT1/cmr/m/n/10 ,
  []
 
 ) [8] (/home/paubric/Projects/EEG2fMRI/article/article.aux) ) 
 Here is how much of TeX's memory you used:
- 1822 strings out of 494923
- 24448 string characters out of 6180742
+ 1828 strings out of 494923
+ 24518 string characters out of 6180742
  78981 words of memory out of 5000000
- 5129 multiletter control sequences out of 15000+600000
- 5795 words of font info for 21 fonts, out of 8000000 for 9000
+ 5134 multiletter control sequences out of 15000+600000
+ 6410 words of font info for 23 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 41i,5n,25p,1160b,214s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on /home/paubric/Projects/EEG2fMRI/article/article.pdf (8 pages, 1720408 bytes).
+ 41i,7n,25p,1182b,262s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on /home/paubric/Projects/EEG2fMRI/article/article.pdf (8 pages, 1734420 bytes).
 PDF statistics:
- 62 PDF objects out of 1000 (max. 8388607)
- 42 compressed objects within 1 object stream
+ 66 PDF objects out of 1000 (max. 8388607)
+ 45 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
