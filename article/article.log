@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2020.9.29)  22 JUN 2021 17:47
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2020.9.29)  24 JUN 2021 14:38
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -448,9 +448,9 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 [3] [4 </home/paubric/Projects/EEG2fMRI/article/eeg.png>] [5]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 89.
+(Font)              <7> on input line 88.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 89.
+(Font)              <5> on input line 88.
  [6] (/home/paubric/Projects/EEG2fMRI/article/article.bbl [7]
 Underfull \hbox (badness 1215) in paragraph at lines 73--77
 \OT1/cmr/m/n/10 lenges, progress and fu-ture.  \OT1/cmr/m/it/10 Sci-ence China Tech-no-log-i-cal Sci-ences\OT1/cmr/m/n/10 ,
@@ -458,15 +458,15 @@ Underfull \hbox (badness 1215) in paragraph at lines 73--77
 
 ) [8] (/home/paubric/Projects/EEG2fMRI/article/article.aux) ) 
 Here is how much of TeX's memory you used:
- 1828 strings out of 494923
- 24518 string characters out of 6180742
+ 1827 strings out of 494923
+ 24512 string characters out of 6180742
  78981 words of memory out of 5000000
- 5134 multiletter control sequences out of 15000+600000
+ 5133 multiletter control sequences out of 15000+600000
  6410 words of font info for 23 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 41i,7n,25p,1182b,262s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,6n,25p,1182b,214s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on /home/paubric/Projects/EEG2fMRI/article/article.pdf (8 pages, 1734420 bytes).
+Output written on /home/paubric/Projects/EEG2fMRI/article/article.pdf (8 pages, 1734044 bytes).
 PDF statistics:
  66 PDF objects out of 1000 (max. 8388607)
  45 compressed objects within 1 object stream

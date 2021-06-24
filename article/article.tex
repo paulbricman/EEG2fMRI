@@ -14,7 +14,7 @@
 \maketitle
 
 \begin{abstract}
-    Functional neuroimaging techniques are essential in advancing research in neuroscience. However, existing techniques require researchers to either compromise on spatial resolution, temporal resolution, cost, or portability. We attempt to model the  mapping between concurrent EEG and fMRI recordings using various machine learning architectures (i.e. MLPs, CNNs, and transformers), in order to combine the complementary qualities of the two modalities. The trained model is then able to reconstruct simultaneous fMRI data solely from EEG data. Although initial results in a within-subject regime are promising, the limited quantity of multi-modal recordings currently available appears to be a major obstacle in generalizing to new subjects.
+    Functional neuroimaging techniques are essential in advancing research in neuroscience. However, existing techniques require researchers to either compromise on spatial resolution, temporal resolution, cost, or portability. We attempt to model the  mapping between concurrent EEG and fMRI recordings using various machine learning architectures (i.e. fully-connected networks, convolutional neural networks, and transformers), in order to combine the complementary qualities of the two modalities. The trained model is then able to reconstruct simultaneous fMRI data solely from EEG data. Although initial results in a within-subject regime are promising, the limited quantity of multi-modal recordings currently available appears to be a major obstacle in generalizing to new subjects.
 \end{abstract}
 
 \section{Introduction}
@@ -27,7 +27,7 @@ Given the lack of techniques which individually exhibit high overall performance
 
 Besides multi-modal functional neuroimaging, investigators have also proposed uni-modal synthesis as a method of augmenting neuroimaging techniques. This consists of conditionally synthetizing novel data based on previous data collected through the same modality. This method has been found to increase performance in downstream machine learning classifiers based on fMRI data \cite{zhuang_fmri_2019}.
 
-In addition to uni-modal synthesis, investigators have also proposed cross-modal synthesis for augmenting neuroimaging techniques \cite{yi_generative_2019}. This consists of reconstructing data collected through a target modality based on data collected through a distinct source modality, by exploiting the inherent relation between them. In a setting where both source and target modalities are available, this task might have limited utility. However, the value of cross-modal synthesis comes from settings where only one modality is available. In such settings, existing data can be used to approximate data collected through the unavailable modality. Unfortunately, this approach has largely been used for augmenting structural neuroimaging, with limited analogous efforts for functional neuroimaging.
+In addition to uni-modal synthesis, investigators have also proposed cross-modal synthesis for augmenting neuroimaging techniques \cite{yi_generative_2019}. This consists of reconstructing data collected through a target modality based on data collected through a different source modality, by exploiting the inherent relation between them. In a setting where both source and target modalities are available, this task might have limited utility. However, the value of cross-modal synthesis comes from settings where only one modality is available. In such settings, existing data can be used to approximate data collected through the unavailable modality. Unfortunately, this approach has largely been used for augmenting structural neuroimaging, with limited analogous efforts for functional neuroimaging.
 
 Despite the major demand for high-performance functional neuroimaging and the success of cross-modal synthesis for structural neuroimaging, limited attention has been given to cross-modal synthesis for functional neuroimaging. The purpose of the current work is to explore the feasibility of this method. This comes as a natural extension to the growing collection of functional neuroimaging augmentation methods.
 
@@ -84,7 +84,6 @@ In a setting in which the time course normalization is absent and the entire dat
 
 In contrast, in a setting in which either time course normalization is introduced or the train-test split policy is based on entirely leaving out one subject during training, no models manage to converge to non-trivial solutions on the testing data. In multiple configurations, the models either learn to output an average fMRI scan or learn to output a completely unrelated scan which is slightly influenced by EEG input.
 
-\begin{table}
 \begin{center}
         \begin{tabular}{|c | c|} 
             \hline
@@ -95,9 +94,11 @@ In contrast, in a setting in which either time course normalization is introduce
             \textbf{transformer} & \textbf{4.976e-4} \\ 
             \hline
            \end{tabular}
-           \caption{Mean squared error of different models in a one-subject-left-out regime}
 \end{center}
-\end{table}
+
+\begin{center}
+    Table 1. Mean squared error of different models in a one-subject-left-out regime
+\end{center}
 
 \section{Discussion}
 

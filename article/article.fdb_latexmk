@@ -1,16 +1,16 @@
 # Fdb version 3
-["bibtex article"] 1624376824 "article.aux" "article.bbl" "article" 1624376825
+["bibtex article"] 1624538287 "article.aux" "article.bbl" "article" 1624538325
   "/usr/share/texlive/texmf-dist/bibtex/bst/base/plain.bst" 1480098433 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "article.aux" 1624376825 1824 b734db5c06e9eb4caebe545a643aacc7 ""
+  "article.aux" 1624538288 1677 e5329b4d9b48ccd969b07f18f9bf0f14 ""
   "article.bcf" 0 -1 0 ""
   "eeg2fmri.bib" 1620130691 19272 933f245b2b8d4f3f91dbf81f2f3b07da ""
   (generated)
-  "article.blg"
   "article.bbl"
-["pdflatex"] 1624376824 "/home/paubric/Projects/EEG2fMRI/article/article.tex" "/home/paubric/Projects/EEG2fMRI/article/article.pdf" "article" 1624376825
+  "article.blg"
+["pdflatex"] 1624538287 "/home/paubric/Projects/EEG2fMRI/article/article.tex" "/home/paubric/Projects/EEG2fMRI/article/article.pdf" "article" 1624538325
   "/etc/texmf/web2c/texmf.cnf" 1601391940 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/paubric/Projects/EEG2fMRI/article/article.aux" 1624376825 1824 b734db5c06e9eb4caebe545a643aacc7 ""
-  "/home/paubric/Projects/EEG2fMRI/article/article.tex" 1624376823 19658 108ce710811bf207e25993233acabe1d ""
+  "/home/paubric/Projects/EEG2fMRI/article/article.aux" 1624538288 1677 e5329b4d9b48ccd969b07f18f9bf0f14 ""
+  "/home/paubric/Projects/EEG2fMRI/article/article.tex" 1624538324 19699 f49c463dfe63f84fa8d038c0198eae4f ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1480098701 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1480098701 1324 c910af8c371558dc20f2d7822f66fe64 ""
@@ -58,13 +58,13 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1520210507 32485 c64754543d8ac501bea6e75e209ea521 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1601481408 127853 b41f58aff49fe1af38af8d065f49d51c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1601392466 724918 9c759ba13a13f933403c6528a57c3086 ""
-  "article.aux" 1624376825 1824 b734db5c06e9eb4caebe545a643aacc7 ""
-  "article.bbl" 1624376824 3395 0f863913ec9856eb626255c0f268c21f "bibtex article"
-  "article.tex" 1624376823 19658 108ce710811bf207e25993233acabe1d ""
+  "article.aux" 1624538288 1677 e5329b4d9b48ccd969b07f18f9bf0f14 ""
+  "article.bbl" 1624538287 3395 0f863913ec9856eb626255c0f268c21f "bibtex article"
+  "article.tex" 1624538324 19699 f49c463dfe63f84fa8d038c0198eae4f ""
   "eeg.png" 1619000886 1796820 f70cbdcac988c6f607b8b2078f26fdae ""
   (generated)
-  "article.log"
-  "article.aux"
   "/home/paubric/Projects/EEG2fMRI/article/article.log"
+  "article.aux"
   "article.pdf"
   "/home/paubric/Projects/EEG2fMRI/article/article.pdf"
+  "article.log"
