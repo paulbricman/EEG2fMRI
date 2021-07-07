@@ -262,6 +262,8 @@ class TransformerModel(pl.LightningModule):
         self.output_decoder = nn.Linear(64, 63 * 52)
         self.transformer = nn.Transformer(d_model=64, dropout=0.5, dim_feedforward=512)
 
+        self.sin_emb = PositionalEncoding(64)
+
         self.sos_emb = nn.Embedding(1, 64)
         self.channel_pos_emb = nn.Embedding(34, 64)
         self.slice_pos_emb = nn.Embedding(53, 64)
@@ -277,17 +279,17 @@ class TransformerModel(pl.LightningModule):
 
         # Generate channel embeddings from channel recordings
         channel_emb = torch.cat([self.channel_encoder(sample) for sample in x]).view(x.size(0), 34, 64)
-        channel_emb = torch.cat([sample + self.channel_pos_emb(self.channel_pos_emb_idx) for sample in channel_emb]).view(x.size(0), 34, 64)
+        channel_emb = torch.movedim(channel_emb, 1, 0)
+        channel_emb = self.sin_emb(channel_emb)
+        #channel_emb = torch.cat([sample + self.channel_pos_emb(self.channel_pos_emb_idx) for sample in channel_emb]).view(x.size(0), 34, 64)
 
         if mode == 'train':
             # Shift slices in target
             slice_emb = torch.cat([self.slice_encoder(sample) for sample in y]).view(y.size(0), 53, 64)
             slice_emb = torch.cat([torch.cat((self.sos_emb(self.sos_emb_idx), sample[:-1])) for sample in slice_emb]).view(y.size(0), 53, 64)
-            slice_emb = torch.cat([sample + self.slice_pos_emb(self.slice_pos_emb_idx) for sample in slice_emb]).view(y.size(0), 53, 64)
-
-            # Reshape for transformer
-            channel_emb = torch.movedim(channel_emb, 1, 0)
             slice_emb = torch.movedim(slice_emb, 1, 0)
+            slice_emb = self.sin_emb(slice_emb)
+            #slice_emb = torch.cat([sample + self.slice_pos_emb(self.slice_pos_emb_idx) for sample in slice_emb]).view(y.size(0), 53, 64)
 
             # Generate target mask and pipe through transformer
             output = self.transformer(channel_emb, slice_emb, tgt_mask = self.tgt_mask)
@@ -298,14 +300,13 @@ class TransformerModel(pl.LightningModule):
         elif mode == 'test':
             # Start with sos embedding and for each batch
             slice_emb = torch.cat([self.sos_emb(self.sos_emb_idx) for sample in x]).view(x.size(0), 1, 64)
-            slice_emb = torch.cat([sample + self.slice_pos_emb(self.sos_emb_idx) for sample in slice_emb]).view(x.size(0), 1, 64)
-
-            channel_emb = torch.movedim(channel_emb, 1, 0)
+            #slice_emb = torch.cat([sample + self.slice_pos_emb(self.sos_emb_idx) for sample in slice_emb]).view(x.size(0), 1, 64)
+            #channel_emb = torch.movedim(channel_emb, 1, 0)
             slice_emb = torch.movedim(slice_emb, 1, 0)
             output_volume = []
 
             for slice_idx in range(53):
-                if slice_idx < 10:
+                if slice_idx < 30:
                     new_slice = y.view(y.size(0), 53, 63 * 52).movedim(1, 0)[slice_idx].view(1, y.size(0), 63 * 52)
                     output_volume += [new_slice]
                     new_slice = new_slice.movedim(1, 0)
@@ -315,8 +316,9 @@ class TransformerModel(pl.LightningModule):
                     slice_emb = torch.cat([slice_emb, new_emb])
                 else:
                     tgt_mask = self.transformer.generate_square_subsequent_mask(slice_idx + 1)
-                    print(tgt_mask)
-                    output = self.transformer(channel_emb, slice_emb, tgt_mask = tgt_mask)
+                    print('FLAG', channel_emb.size(), slice_emb.size())
+                    used_slice_emb = self.sin_emb(slice_emb)
+                    output = self.transformer(channel_emb, used_slice_emb, tgt_mask = tgt_mask)
 
                     new_slice = self.output_decoder(output)[-1].view(1, x.size(0), 63 * 52)
                     output_volume += [new_slice]
@@ -372,3 +374,21 @@ class TransformerModel(pl.LightningModule):
             'monitor': 'train_loss'
         }
 
+
+class PositionalEncoding(nn.Module):
+
+    def __init__(self, d_model, dropout=0.1, max_len=5000):
+        super(PositionalEncoding, self).__init__()
+        self.dropout = nn.Dropout(p=dropout)
+
+        pe = torch.zeros(max_len, d_model)
+        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
+        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-np.log(10000.0) / d_model))
+        pe[:, 0::2] = torch.sin(position * div_term) * 0.1
+        pe[:, 1::2] = torch.cos(position * div_term) * 0.1
+        pe = pe.unsqueeze(0).transpose(0, 1)
+        self.register_buffer('pe', pe)
+
+    def forward(self, x):
+        x = x + self.pe[:x.size(0), :]
+        return self.dropout(x)

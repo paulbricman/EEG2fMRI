@@ -45,7 +45,7 @@ class OddballDataset(Dataset):
         eeg_path = eeg_base_path + 'task' + f'{(block_idx // 3 + 1):03}' + \
             '_run' + f'{(block_idx % 3 + 1):03}/' + 'EEG_rereferenced.mat'
         mask_path = subj_path + 'BOLD/mask.nii'
-        mean_path = subj_path + 'BOLD/mean.nii'
+        median_path = subj_path + 'BOLD/median.nii'
 
         if block_idx < 3:
             block_type = 'auditory'
@@ -60,11 +60,11 @@ class OddballDataset(Dataset):
         eeg_norm_stats = np.loadtxt(eeg_base_path + 'norm_stats.csv', delimiter=',')
         fmri_sample_data = nib.load(fmri_path).get_fdata()
         mask_data = nib.load(mask_path).get_fdata()
-        mean_data = nib.load(mean_path).get_fdata()
+        median_data = nib.load(median_path).get_fdata()
 
-        #fmri_sample_data = np.divide(fmri_sample_data, mean_data, out=np.ones_like(fmri_sample_data), where=mean_data!=0) - 1
-        #fmri_sample_data = (fmri_sample_data - mean_data)
-        fmri_sample_data = fmri_sample_data - 100
+        fmri_sample_data = np.divide(fmri_sample_data, median_data, out=np.ones_like(fmri_sample_data), where=median_data!=0) - 1
+        #fmri_sample_data = (fmri_sample_data - median_data)
+        #fmri_sample_data = fmri_sample_data - 100
 
         # Extract relevant sample data from block
         eeg_block_data = eeg_block_data[:34]
@@ -76,20 +76,26 @@ class OddballDataset(Dataset):
         eeg_sample_data = np.array(
             [(eeg_sample_data[channel] - eeg_norm_stats[channel][0]) / (eeg_norm_stats[channel][1] - eeg_norm_stats[channel][0]) for channel in range(len(eeg_sample_data))])
 
+        #eeg_sample_data = (eeg_sample_data + 2286) / 4200
+        eeg_sample_data = np.array(
+            [(eeg_sample_data[channel] + np.random.normal(0, 0.2)) for channel in range(len(eeg_sample_data))])
+
+        eeg_sample_data = eeg_sample_data + 0.001 * np.random.randn(*eeg_sample_data.shape)
+
         # Convert to Pytorch tensors
-        eeg_sample_data = torch.from_numpy(eeg_sample_data.astype('float32'))
-        fmri_sample_data = torch.from_numpy(fmri_sample_data.astype('float32'))
-        subject = torch.from_numpy(np.array([subj_idx / 100]).astype('float32'))
-        mask_data = torch.from_numpy(mask_data)
-        fmri_sample_data = torch.mul(fmri_sample_data, mask_data).float()
+        #eeg_sample_data = torch.from_numpy(eeg_sample_data.astype('float32'))
+        #fmri_sample_data = torch.from_numpy(fmri_sample_data.astype('float32'))
+        #subject = torch.from_numpy(np.array([subj_idx / 100]).astype('float32'))
+        #mask_data = torch.from_numpy(mask_data)
+        #fmri_sample_data = torch.mul(fmri_sample_data, mask_data).float()
 
-        return [[eeg_sample_data, subject], [fmri_sample_data, mask_data]]
+        return [[eeg_sample_data, 0], [fmri_sample_data, mask_data]]
 
 
-def fmri_preview(volume):
+def fmri_preview(volume, filename=None):
     """Preview central slices of an fMRI volume across its 3 dimensions."""
     slice_sagital = volume[26, :, :]
-    slice_coronal = volume[:, 31, :]
+    slice_coronal = volume[:, 30, :]
     slice_horizontal = volume[:, :, 26]
 
     fig, axes = plt.subplots(1, 3)
@@ -99,7 +105,10 @@ def fmri_preview(volume):
     figManager = plt.get_current_fig_manager()
     figManager.window.showMaximized()
 
-    plt.show()
+    if filename:
+    	plt.savefig(filename, dpi=300)
+    else:
+        plt.show()
 
 
 def eeg_preview(frame):
@@ -195,6 +204,18 @@ def compute_mean_subj_scans(dataset):
         print(mean_scan.shape)
         mean_scan = nib.Nifti1Image(mean_scan, np.eye(4))
         nib.save(mean_scan, os.path.join(subj_path, 'mean.nii'))
+
+
+def compute_median_subj_scans(dataset):
+    for subj_idx in range(1, 18):
+        subj_path = dataset.root_dir + '/sub' + f'{subj_idx:03}/BOLD/'
+        scan_files = glob.glob(os.path.join(subj_path, 's*.nii'))
+        scan_files = [nib.load(e).get_fdata() for e in scan_files]
+        median_scan = np.median(scan_files, axis=0)
+        print(median_scan.shape)
+        median_scan = nib.Nifti1Image(median_scan, np.eye(4))
+        nib.save(median_scan, os.path.join(subj_path, 'median.nii'))
+
 
 def compute_eeg_norm_stats(dataset):
     for subj_idx in range(1, 18):
